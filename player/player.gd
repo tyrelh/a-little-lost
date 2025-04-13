@@ -1,67 +1,41 @@
 extends CharacterBody2D
 
-const speed = 40
-var current_direction = "down"
+const STATE_IDLE: String = "Idle"
+const STATE_WALK: String = "Walk"
+
+@export var speed: int = 45
+@export var state: String = STATE_IDLE
+var current_direction: String = "down"
+@onready var stateMachine = $AnimationTree["parameters/playback"]
 
 func _ready():
-	play_animation(false)
+	$AnimationPlayer.set("speed_scale", 0.2)
 
-func _physics_process(delta):
+func _physics_process(delta: float):
 	player_movement(delta)
 
-func player_movement(delta: float):
-	if Input.is_action_pressed("move_up"):
-		current_direction = "up"
-		velocity.x = 0
-		velocity.y = -speed
-		play_animation(true)
-	elif Input.is_action_pressed("move_down"):
-		current_direction = "down"
-		velocity.x = 0
-		velocity.y = speed
-		play_animation(true)
-	elif Input.is_action_pressed("move_left"):
-		current_direction = "left"
-		velocity.x = -speed
-		velocity.y = 0
-		play_animation(true)
-	elif Input.is_action_pressed("move_right"):
-		current_direction = "right"
-		velocity.x = speed
-		velocity.y = 0
-		play_animation(true)
-	else:
-		velocity.x = 0
-		velocity.y = 0
-		play_animation(false)
-
+func player_movement(_delta: float):
+	
+	# read input vector
+	var inputVector: Vector2 = Vector2.ZERO
+	inputVector.x = int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))
+	inputVector.y = int(Input.is_action_pressed("move_down")) - int(Input.is_action_pressed("move_up"))
+	
+	var inputTotal: float = inputVector.x + inputVector.y
+	if state == STATE_IDLE:
+		if inputVector != Vector2.ZERO:
+			state = STATE_WALK
+			stateMachine.travel(STATE_WALK)
+	elif state == STATE_WALK:
+		if inputVector == Vector2.ZERO:
+			state = STATE_IDLE
+			stateMachine.travel(STATE_IDLE)
+	
+	# set animation
+	if inputVector != Vector2.ZERO:
+		$AnimationTree.set("parameters/Walk/blend_position", inputVector)
+		$AnimationTree.set("parameters/Idle/blend_position", inputVector)
+	
+	velocity = inputVector.normalized() * speed
+	
 	move_and_slide()
-
-func play_animation(isMoving: bool):
-	var direction = current_direction
-	var animation = $AnimatedSprite2D
-
-	if direction == "right":
-		animation.flip_h = true
-		if isMoving:
-			animation.play("player-walk-side")
-		else:
-			animation.play("player-idle-side")
-	elif direction == "left":
-		animation.flip_h = false
-		if isMoving:
-			animation.play("player-walk-side")
-		else:
-			animation.play("player-idle-side")
-	elif direction == "up":
-		animation.flip_h = false
-		if isMoving:
-			animation.play("player-walk-back")
-		else:
-			animation.play("player-idle-back")
-	elif direction == "down":
-		animation.flip_h = false
-		if isMoving:
-			animation.play("player-walk-front")
-		else:
-			animation.play("player-idle-front")
