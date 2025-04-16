@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://chmxiwa5hyc34"]
+[gd_scene load_steps=3 format=3 uid="uid://chmxiwa5hyc34"]
 
-[ext_resource type="Texture2D" uid="uid://cwfdoos5qmhlm" path="res://icon.svg" id="1_tlso4"]
+[ext_resource type="PackedScene" uid="uid://cug64tp4u3j8b" path="res://levels/smalltown.tscn" id="1_y8kmw"]
+[ext_resource type="PackedScene" uid="uid://bf0121k3mvsdc" path="res://player/player.tscn" id="2_y8kmw"]
 
 [node name="GameManager" type="Node"]
 
@@ -23,11 +24,11 @@ stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="Control/SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(2000, 1200)
-size_2d_override = Vector2i(2000, 1200)
+size = Vector2i(1152, 648)
+size_2d_override = Vector2i(1152, 648)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 
-[node name="Sprite2D" type="Sprite2D" parent="Control/SubViewportContainer/SubViewport"]
-position = Vector2(233, 210)
-texture = ExtResource("1_tlso4")
+[node name="Smalltown" parent="Control/SubViewportContainer/SubViewport" instance=ExtResource("1_y8kmw")]
+
+[node name="Player" parent="Control/SubViewportContainer/SubViewport" instance=ExtResource("2_y8kmw")]
