@@ -1,7 +1,8 @@
-[gd_scene load_steps=46 format=3 uid="uid://bf0121k3mvsdc"]
+[gd_scene load_steps=47 format=3 uid="uid://bf0121k3mvsdc"]
 
-[ext_resource type="Script" uid="uid://7hf1cvf7bvkl" path="res://player/player.gd" id="1_rkbax"]
 [ext_resource type="Texture2D" uid="uid://djgtqeij44580" path="res://sprites/characters/racoons/raccoon-kit.png" id="2_g1dw6"]
+[ext_resource type="Script" uid="uid://dwvdimp4x2rnp" path="res://utilities/interactions/PlayerInput.gd" id="2_rkbax"]
+[ext_resource type="Script" uid="uid://csk6vd2prxbyq" path="res://utilities/interactions/CharacterMovement.gd" id="3_g1dw6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rkbax"]
 radius = 8.0
@@ -633,7 +634,6 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
-script = ExtResource("1_rkbax")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(8, 8)
@@ -652,8 +652,33 @@ libraries = {
 speed_scale = 0.5
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
 position = Vector2(8, 8)
 texture = ExtResource("2_g1dw6")
 flip_h = true
 hframes = 25
 frame = 10
+
+[node name="CollisionRayCast" type="RayCast2D" parent="."]
+position = Vector2(8, 8)
+target_position = Vector2(0, 16)
+collide_with_areas = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+texture_filter = 1
+position = Vector2(8, 8)
+zoom = Vector2(6, 6)
+position_smoothing_enabled = true
+
+[node name="Input" type="Node" parent="." node_paths=PackedStringArray("playerMovement")]
+script = ExtResource("2_rkbax")
+playerMovement = NodePath("../Movement")
+
+[node name="Movement" type="Node" parent="." node_paths=PackedStringArray("character", "animationTree")]
+script = ExtResource("3_g1dw6")
+character = NodePath("..")
+animationTree = NodePath("../AnimationTree")
+
+[node name="StateMachine" type="Node" parent="."]
+
+[node name="Roam" type="Node" parent="StateMachine"]

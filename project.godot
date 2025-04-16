@@ -22,10 +22,7 @@ Logger="*res://globals/logger.gd"
 
 [display]
 
-window/size/viewport_width=2000
-window/size/viewport_height=1200
 window/stretch/mode="canvas_items"
-window/stretch/scale=6.0
 window/stretch/scale_mode="integer"
 
 [input]
