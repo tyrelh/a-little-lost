@@ -5,8 +5,8 @@ class_name PlayerInput extends Node
 @export_group("Dependant Nodes")
 @export var playerMovement: CharacterMovement
 
-func _ready() -> void:
-	Logger.debug("Loading PlayerInput component...")
+#func _ready() -> void:
+	#Logger.debug("Loading PlayerInput component...")
 
 func _physics_process(delta: float) -> void:
 	processPlayerInput()

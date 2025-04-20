@@ -21,7 +21,7 @@ enum MOVEMENT_STATE { IDLE, TURNING, WALKING }
 
 
 func _ready() -> void:
-	Logger.debug("Loading CharacterMovement component...")
+	#Logger.debug("Loading CharacterMovement component...")
 	animationPlayer.connect("animation_finished", _on_AnimationPlayer_animation_finished)
 	debugText.add_theme_font_size_override("normal_font_size", 8)
 	animationPlayer.play("idle-down")
