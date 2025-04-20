@@ -8,8 +8,8 @@ const STATE_WALK: String = "Walk"
 var current_direction: String = "down"
 @onready var stateMachine = $AnimationTree["parameters/playback"]
 
-func _ready():
-	$AnimationPlayer.set("speed_scale", 0.2)
+#func _ready():
+	#$AnimationPlayer.set("speed_scale", 0.1)
 
 #func _physics_process(delta: float):
 	#player_movement(delta)

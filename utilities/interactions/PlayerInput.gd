@@ -1,23 +1,31 @@
 class_name PlayerInput extends CharacterInput
 
-@export_group("Player Input")
-#@export var holdThreshold: float = 0.1
-#@export var holdTime: float = 0.0
-@export var inputDirection: Vector2 = Vector2.ZERO
+#@export_group("Player Input")
 
-@export_group("Nodes")
+@export_group("Dependant Nodes")
 @export var playerMovement: CharacterMovement
 
 func _ready() -> void:
-	Logger.info("Loading PlayerInput component...")
+	Logger.debug("Loading PlayerInput component...")
 
 func _physics_process(delta: float) -> void:
-	processPlayerInput(delta)
-		
-func processPlayerInput(delta: float) -> void:
-	if inputDirection.y == 0:
-		inputDirection.x = int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))
-	if inputDirection.x ==0:
-		inputDirection.y = int(Input.is_action_pressed("move_down")) - int(Input.is_action_pressed("move_up"))
-	if inputDirection != Vector2.ZERO:
-		playerMovement.move(inputDirection, delta)
+	processPlayerInput()
+	
+func processPlayerInput() -> void:
+	if Input.is_action_just_pressed("move_down"):
+		playerMovement.registerMoveDirection(Vector2.DOWN)
+	if Input.is_action_just_pressed("move_up"):
+		playerMovement.registerMoveDirection(Vector2.UP)
+	if Input.is_action_just_pressed("move_left"):
+		playerMovement.registerMoveDirection(Vector2.LEFT)
+	if Input.is_action_just_pressed("move_right"):
+		playerMovement.registerMoveDirection(Vector2.RIGHT)
+	
+	if Input.is_action_just_released("move_down"):
+		playerMovement.deregisterMoveDirection(Vector2.DOWN)
+	if Input.is_action_just_released("move_up"):
+		playerMovement.deregisterMoveDirection(Vector2.UP)
+	if Input.is_action_just_released("move_left"):
+		playerMovement.deregisterMoveDirection(Vector2.LEFT)
+	if Input.is_action_just_released("move_right"):
+		playerMovement.deregisterMoveDirection(Vector2.RIGHT)
