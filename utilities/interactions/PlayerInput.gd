@@ -1,4 +1,4 @@
-class_name PlayerInput extends CharacterInput
+class_name PlayerInput extends Node
 
 #@export_group("Player Input")
 
