@@ -8,6 +8,7 @@ enum MOVEMENT_STATE { IDLE, TURNING, WALKING }
 @export var character: Node2D
 @export var animationPlayer: AnimationPlayer
 @export var debugText: RichTextLabel
+@export var collisionRaycast: RayCast2D
 
 @export_group("Movement Constants")
 @export var speed: float = 45.0
@@ -43,8 +44,8 @@ func deregisterMoveDirection(direction: Vector2) -> void:
 		queuedMovementState = MOVEMENT_STATE.IDLE
 
 func _physics_process(delta: float) -> void:
-	_updateDebugText(_movementStateToString(movementState) + ", " + str(inputDirection))
-	#_updateDebugText(animationPlayer.current_animation)
+	#_updateDebugText(_movementStateToString(movementState) + ", " + str(inputDirection))
+	_updateDebugText(animationPlayer.current_animation)
 	move(delta)
 	
 func move(delta: float) -> void:
@@ -63,6 +64,11 @@ func move(delta: float) -> void:
 				remainder = Constants.GRID_SIZE - fmod(character.position.x, Constants.GRID_SIZE)
 		# check if close to next grid
 		if remainder <= snapDistance:
+			if _isBlocked():
+				snapPositionToGrid()
+				_fullStop()
+				Logger.debug("Collision, stopped walking")
+				return
 			#Logger.debug("move queue: %s" % [queuedInputDirection])
 			# if close to next grid and queued to idle
 			if queuedMovementState == MOVEMENT_STATE.IDLE and len(queuedInputDirection) == 0:
@@ -94,6 +100,9 @@ func move(delta: float) -> void:
 				movementState = MOVEMENT_STATE.TURNING
 				animationPlayer.play("turn-%s" % queuedWalkDirection)
 				return
+			if _isBlocked():
+				Logger.debug("Collision, will not start walking")
+				return
 			movementState = queuedMovementState
 			inputDirection = queuedInputDirection[0]
 			animationPlayer.play("walk-%s" % [Constants.VectorToString(inputDirection)])
@@ -118,29 +127,38 @@ func isTurning() -> bool:
 	return movementState == MOVEMENT_STATE.TURNING
 
 func _on_AnimationPlayer_animation_finished(animName: String) -> void:
-	# animation names are in the form "action-direction"
-	var animation: PackedStringArray = animName.split("-")
-	var animationAction: String = animation[0]
-	var animationDirection: String = animation[1]
 	# act on finished turn animations
-	if animationAction == "turn":
-		#Logger.debug("turning animation finished %s" % [animName])
+	if _getAnimationActionString(animName) == "turn":
+		var animationDirection: String = _getFacingDirectionString(animName)
+		# set colission raycast target position to be the facing direction
+		# target position is relitive to position
+		collisionRaycast.target_position = Constants.StringToVector(animationDirection) * Constants.GRID_SIZE
+		# updating the raycast target_position takes some time
+		await get_tree().create_timer(0.05).timeout
+		Logger.debug("turning animation finished %s" % [animName])
+		# should continue moving
 		if len(queuedInputDirection) > 0:
 			var nextQueuedMovementDirection: String = Constants.VectorToString(queuedInputDirection[0])
+			# the next move direction doesn't match direction facing
 			if nextQueuedMovementDirection != animationDirection:
 				Logger.info("strange input behaviour. need to turn again. Completed turn direction %s , movement direction %s" % [animationDirection, nextQueuedMovementDirection])
 				animationPlayer.play("turn-%s" % nextQueuedMovementDirection)
 				return
+			if _isBlocked():
+				_fullStop(animName)
+				Logger.debug("Collision after turn, will not start walking")
+				return
 			movementState = MOVEMENT_STATE.WALKING
 			inputDirection = queuedInputDirection[0]
 			animationPlayer.play("walk-%s" % animationDirection)
-			#Logger.debug("%s -> walk-%s" % [animName, animationDirection])
+			Logger.debug("%s -> walk-%s" % [animName, animationDirection])
+		# should stop moving
 		else:
 			movementState = MOVEMENT_STATE.IDLE
 			inputDirection = Vector2.ZERO
 			animationPlayer.play("idle-%s" % animationDirection)
-			#Logger.debug("%s -> idle-%s" % [animName, animationDirection])
-		#Logger.debug("walk queue after %s: %s" % [animName, queuedInputDirection])
+			Logger.debug("%s -> idle-%s" % [animName, animationDirection])
+		Logger.debug("walk queue after %s: %s" % [animName, queuedInputDirection])
 			
 func _updateDebugText(value: String) -> void:
 	debugText.text = value
@@ -156,3 +174,31 @@ func _animValues(animName: String) -> Dictionary:
 		"action": values[0],
 		"direction": values[1]
 	}
+
+func _fullStop(animName: String = "") -> void:
+	movementState = MOVEMENT_STATE.IDLE
+	queuedMovementState = MOVEMENT_STATE.IDLE
+	queuedInputDirection = []
+	animationPlayer.play("idle-%s" % _getFacingDirectionString(animName))
+
+func _getFacingDirectionString(animName: String = "") -> String:
+	if animName == "":
+		animName = animationPlayer.current_animation
+	# animation names are in the form "action-direction"
+	var animation: PackedStringArray = animName.split("-")
+	Logger.info("getFacingDirectionString animation: %s" % animName)
+	return animation[1]
+	
+func _getAnimationActionString(animName: String = "") -> String:
+	if animName == "":
+		animName = animationPlayer.current_animation
+	# animation names are in the form "action-direction"
+	var animation: PackedStringArray = animName.split("-")
+	return animation[0]
+
+func _isBlocked() -> bool:
+	Logger.debug("raycast target: %s" % collisionRaycast.target_position)
+	var isColliding: bool = collisionRaycast.is_colliding()
+	if isColliding:
+		Logger.debug("Checked for collision and found")
+	return isColliding
