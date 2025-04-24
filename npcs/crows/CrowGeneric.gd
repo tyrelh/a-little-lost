@@ -11,8 +11,9 @@ const CROW_IDLE_ANIMATION = "idle-left"
 const CROW_TAKEOFF_ANIMATION = "takeoff-left"
 const CROW_FLY_ANIMATION = "fly-left"
 
-@onready var playerDetectionZone = $PlayerDetectionZone
+@onready var playerDetectionZone: PlayerDetectionZone = $PlayerDetectionZone
 @onready var animationPlayer: AnimationPlayer = $AnimationPlayer
+@onready var textDebugger: BasicTextDebugger = $BasicTextDebugger
 
 var _state = CROW_IDLE_STATE
 var rng = RandomNumberGenerator.new()
@@ -22,6 +23,7 @@ func _ready():
 	rng.randomize()
 	# add a small random delay to the beginning of the looping animation so that all crows aren't moving in syncrony
 	animationPlayer.play(CROW_IDLE_ANIMATION, -1, rng.randf_range(0.8, 1.0))
+	#animationPlayer.connect("animation_finished", _on_AnimationPlayer_animation_finished)
 
 
 func _process(delta: float) -> void:
@@ -31,6 +33,7 @@ func _process(delta: float) -> void:
 			do_idle(delta)
 		CROW_WANDER_STATE:
 			do_wander()
+	textDebugger.UpdateDebugText(animationPlayer.current_animation)
 
 
 func do_idle(_delta: float) -> void:
@@ -50,7 +53,8 @@ func check_for_player():
 		animationPlayer.play_backwards(CROW_TAKEOFF_ANIMATION)
 
 
-func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
+func _on_AnimationPlayer_animation_finished(anim_name: StringName) -> void:
+	Logger.debug("Crow animation finished : %s" % anim_name)
 	if (anim_name == CROW_TAKEOFF_ANIMATION && _state == CROW_TAKEOFF_STATE):
 		_state = CROW_WANDER_STATE
 		animationPlayer.play(CROW_FLY_ANIMATION)

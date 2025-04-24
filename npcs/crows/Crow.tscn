@@ -1,7 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://c6v4jko0lr26i"]
+[gd_scene load_steps=11 format=3 uid="uid://c6v4jko0lr26i"]
 
-[ext_resource type="Script" uid="uid://gye5jmubiq0q" path="res://npcs/crows/crow-generic.gd" id="1_ltfou"]
+[ext_resource type="Script" uid="uid://gye5jmubiq0q" path="res://npcs/crows/CrowGeneric.gd" id="1_ltfou"]
 [ext_resource type="Texture2D" uid="uid://db4usmhplus3e" path="res://sprites/characters/crows/crow.png" id="1_xyw0t"]
+[ext_resource type="PackedScene" uid="uid://dvvm66adv8sqw" path="res://utilities/interactions/PlayerDetectionZone.tscn" id="3_sa3nv"]
+[ext_resource type="PackedScene" uid="uid://0xa11eweuo26" path="res://utilities/debugging/BasicTextDebugger.tscn" id="4_ty2yl"]
 
 [sub_resource type="Animation" id="Animation_sa3nv"]
 length = 0.001
@@ -25,66 +27,6 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-
-[sub_resource type="Animation" id="Animation_ltfou"]
-resource_name = "idle-left"
-length = 3.4
-loop_mode = 1
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.35, 1, 1.55, 1.95, 2.15, 2.35, 2.45, 2.8, 2.9, 3.1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 0, 1, 0, 2, 3, 2, 3, 2, 0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-
-[sub_resource type="Animation" id="Animation_ty2yl"]
-resource_name = "takeoff-left"
-length = 1.3
-loop_mode = 1
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.15, 0.35, 0.5, 0.65, 0.85, 1, 1.15),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [4, 5, 6, 7, 8, 9, 10, 11]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.0333333),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
@@ -120,6 +62,65 @@ tracks/1/keys = {
 "values": [13, 14, 15, 16, 17]
 }
 
+[sub_resource type="Animation" id="Animation_ltfou"]
+resource_name = "idle-left"
+length = 3.4
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35, 1, 1.55, 1.95, 2.15, 2.35, 2.45, 2.8, 2.9, 3.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 0, 1, 0, 2, 3, 2, 3, 2, 0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_ty2yl"]
+resource_name = "takeoff-left"
+length = 1.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.35, 0.5, 0.65, 0.85, 1, 1.15),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [4, 5, 6, 7, 8, 9, 10, 11]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0333333),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ty2yl"]
 _data = {
 &"RESET": SubResource("Animation_sa3nv"),
@@ -149,3 +150,13 @@ hframes = 18
 position = Vector2(8, 8)
 shape = SubResource("CircleShape2D_xyw0t")
 debug_color = Color(0, 0.6, 0.701961, 0.137255)
+
+[node name="PlayerDetectionZone" parent="." instance=ExtResource("3_sa3nv")]
+position = Vector2(8, 8)
+scale = Vector2(1.5, 1.5)
+collision_mask = 16
+
+[node name="BasicTextDebugger" parent="." instance=ExtResource("4_ty2yl")]
+position = Vector2(0, 16)
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

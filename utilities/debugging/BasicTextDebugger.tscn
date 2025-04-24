@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://0xa11eweuo26"]
+
+[ext_resource type="Script" uid="uid://bfmldmm1gibfg" path="res://utilities/debugging/BasicTextDebugger.gd" id="1_mr8hm"]
+[ext_resource type="FontFile" uid="uid://d3lq2vpo0ghvd" path="res://fonts/TinyPixie2.ttf" id="2_3cigv"]
+
+[sub_resource type="Theme" id="Theme_f740g"]
+default_font = ExtResource("2_3cigv")
+default_font_size = 6
+
+[node name="Debugger" type="Node2D"]
+script = ExtResource("1_mr8hm")
+
+[node name="DebugText1" type="RichTextLabel" parent="."]
+texture_filter = 1
+offset_right = 192.0
+offset_bottom = 40.0
+theme = SubResource("Theme_f740g")
+text = "Debug"

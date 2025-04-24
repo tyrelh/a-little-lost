@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dvvm66adv8sqw"]
+
+[ext_resource type="Script" uid="uid://dgtoluadyvsb3" path="res://utilities/interactions/PlayerDetectionZone.gd" id="1_io7ip"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h6t64"]
+radius = 24.0
+
+[node name="PlayerDetectionZone" type="Area2D"]
+collision_layer = 16
+script = ExtResource("1_io7ip")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_h6t64")
+debug_color = Color(0.592157, 0, 0.898039, 0.239216)
+
+[connection signal="body_entered" from="." to="." method="_on_PlayerDetectionZone_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_PlayerDetectionZone_body_exited"]
