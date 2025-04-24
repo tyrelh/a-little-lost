@@ -7,8 +7,8 @@ enum MOVEMENT_STATE { IDLE, TURNING, WALKING }
 @export_group("Dependancy Nodes")
 @export var character: Node2D
 @export var animationPlayer: AnimationPlayer
-@export var debugText: RichTextLabel
 @export var collisionRaycast: RayCast2D
+@export var textDebugger: BasicTextDebugger
 
 @export_group("Movement Constants")
 @export var speed: float = 45.0
@@ -24,7 +24,6 @@ enum MOVEMENT_STATE { IDLE, TURNING, WALKING }
 func _ready() -> void:
 	#Logger.debug("Loading CharacterMovement component...")
 	animationPlayer.connect("animation_finished", _on_AnimationPlayer_animation_finished)
-	debugText.add_theme_font_size_override("normal_font_size", 8)
 	animationPlayer.play("idle-down")
 
 func registerMoveDirection(direction: Vector2) -> void:
@@ -45,7 +44,7 @@ func deregisterMoveDirection(direction: Vector2) -> void:
 
 func _physics_process(delta: float) -> void:
 	#_updateDebugText(_movementStateToString(movementState) + ", " + str(inputDirection))
-	_updateDebugText(animationPlayer.current_animation)
+	textDebugger.UpdateDebugText(animationPlayer.current_animation)
 	move(delta)
 	
 func move(delta: float) -> void:
@@ -160,8 +159,6 @@ func _on_AnimationPlayer_animation_finished(animName: String) -> void:
 			Logger.debug("%s -> idle-%s" % [animName, animationDirection])
 		Logger.debug("walk queue after %s: %s" % [animName, queuedInputDirection])
 			
-func _updateDebugText(value: String) -> void:
-	debugText.text = value
 
 func _movementStateToString(moveState: MOVEMENT_STATE) -> String:
 	var keys := MOVEMENT_STATE.keys()

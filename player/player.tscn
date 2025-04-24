@@ -1,9 +1,10 @@
-[gd_scene load_steps=28 format=3 uid="uid://bf0121k3mvsdc"]
+[gd_scene load_steps=29 format=3 uid="uid://bf0121k3mvsdc"]
 
 [ext_resource type="Texture2D" uid="uid://djgtqeij44580" path="res://sprites/characters/racoons/raccoon-kit.png" id="2_g1dw6"]
 [ext_resource type="Script" uid="uid://dwvdimp4x2rnp" path="res://utilities/interactions/PlayerInput.gd" id="2_rkbax"]
 [ext_resource type="Script" uid="uid://dia7tlgggpnif" path="res://utilities/interactions/CharacterCollisionRaycast.gd" id="2_yw30f"]
 [ext_resource type="Script" uid="uid://csk6vd2prxbyq" path="res://utilities/interactions/CharacterMovement.gd" id="3_g1dw6"]
+[ext_resource type="PackedScene" uid="uid://0xa11eweuo26" path="res://utilities/debugging/BasicTextDebugger.tscn" id="5_qjkh3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rkbax"]
 radius = 8.0
@@ -679,21 +680,16 @@ position_smoothing_speed = 10.0
 script = ExtResource("2_rkbax")
 playerMovement = NodePath("../Movement")
 
-[node name="Movement" type="Node" parent="." node_paths=PackedStringArray("character", "animationPlayer", "debugText", "collisionRaycast")]
+[node name="Movement" type="Node" parent="." node_paths=PackedStringArray("character", "animationPlayer", "collisionRaycast", "textDebugger")]
 script = ExtResource("3_g1dw6")
 character = NodePath("..")
 animationPlayer = NodePath("../AnimationPlayer")
-debugText = NodePath("../RichTextLabel")
 collisionRaycast = NodePath("../CollisionRayCast")
+textDebugger = NodePath("../BasicTextDebugger")
 
 [node name="StateMachine" type="Node" parent="."]
 
 [node name="Roam" type="Node" parent="StateMachine"]
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-offset_left = 8.0
-offset_top = 17.0
-offset_right = 48.0
-offset_bottom = 57.0
-bbcode_enabled = true
-text = "hello"
+[node name="BasicTextDebugger" parent="." instance=ExtResource("5_qjkh3")]
+position = Vector2(16, 8)
