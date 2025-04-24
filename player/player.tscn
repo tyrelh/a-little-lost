@@ -1,5 +1,6 @@
-[gd_scene load_steps=29 format=3 uid="uid://bf0121k3mvsdc"]
+[gd_scene load_steps=30 format=3 uid="uid://bf0121k3mvsdc"]
 
+[ext_resource type="PackedScene" uid="uid://brla8vwpw4vyx" path="res://utilities/characters/eyes/WhiteEyes2.tscn" id="2_aqcbf"]
 [ext_resource type="Texture2D" uid="uid://djgtqeij44580" path="res://sprites/characters/racoons/raccoon-kit.png" id="2_g1dw6"]
 [ext_resource type="Script" uid="uid://dwvdimp4x2rnp" path="res://utilities/interactions/PlayerInput.gd" id="2_rkbax"]
 [ext_resource type="Script" uid="uid://dia7tlgggpnif" path="res://utilities/interactions/CharacterCollisionRaycast.gd" id="2_yw30f"]
@@ -645,6 +646,7 @@ _data = {
 collision_layer = 17
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(8, 8)
 shape = SubResource("CircleShape2D_rkbax")
 
@@ -657,19 +659,23 @@ speed_scale = 0.5
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 position = Vector2(8, 8)
-scale = Vector2(0.941176, 1)
 texture = ExtResource("2_g1dw6")
 flip_h = true
 hframes = 25
 frame = 10
 
+[node name="WhiteEyes2" parent="." instance=ExtResource("2_aqcbf")]
+position = Vector2(7, 9)
+
 [node name="CollisionRayCast" type="RayCast2D" parent="."]
+visible = false
 position = Vector2(8, 8)
 target_position = Vector2(0, 16)
 collide_with_areas = true
 script = ExtResource("2_yw30f")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+visible = false
 texture_filter = 1
 position = Vector2(8, 8)
 zoom = Vector2(4, 4)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=4 uid="uid://b6j6udc58f0ji"]
 
-[ext_resource type="PackedScene" uid="uid://bf0121k3mvsdc" path="res://player/player.tscn" id="1_6xmxd"]
+[ext_resource type="PackedScene" uid="uid://bf0121k3mvsdc" path="res://player/Player.tscn" id="1_6xmxd"]
 [ext_resource type="Texture2D" uid="uid://mht6rjvx3wsi" path="res://sprites/tilesets/grass-sheet.png" id="2_tcf2h"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4717r"]

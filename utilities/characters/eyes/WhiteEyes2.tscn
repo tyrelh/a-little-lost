@@ -1,0 +1,93 @@
+[gd_scene load_steps=6 format=3 uid="uid://brla8vwpw4vyx"]
+
+[ext_resource type="Script" uid="uid://djoiohpal7ayo" path="res://utilities/characters/eyes/BlinkingEyes.gd" id="1_xl4vj"]
+[ext_resource type="Texture2D" uid="uid://dehuk61kb7bu0" path="res://sprites/characters/eyes/white-eye-2.png" id="2_xl4vj"]
+
+[sub_resource type="Animation" id="1"]
+resource_name = "CloseEyes"
+length = 0.15
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EyeRight:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.01, 0.02, 0.14, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 1, 0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EyeLeft:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.01, 0.02, 0.14, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 1, 0]
+}
+
+[sub_resource type="Animation" id="Animation_xl4vj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EyeLeft:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EyeRight:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xpxwy"]
+_data = {
+&"CloseEyes": SubResource("1"),
+&"RESET": SubResource("Animation_xl4vj")
+}
+
+[node name="WhiteEyes2" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_xl4vj")
+
+[node name="EyeRight" type="Sprite2D" parent="."]
+position = Vector2(1, -1)
+texture = ExtResource("2_xl4vj")
+centered = false
+hframes = 3
+frame = 2
+
+[node name="EyeLeft" type="Sprite2D" parent="."]
+position = Vector2(-1, -1)
+texture = ExtResource("2_xl4vj")
+centered = false
+hframes = 3
+frame = 2
+region_rect = Rect2(0, 0, 1, 2)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_xpxwy")
+}
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
