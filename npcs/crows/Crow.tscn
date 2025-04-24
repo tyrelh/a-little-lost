@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://c6v4jko0lr26i"]
+[gd_scene load_steps=12 format=3 uid="uid://c6v4jko0lr26i"]
 
 [ext_resource type="Script" uid="uid://gye5jmubiq0q" path="res://npcs/crows/CrowGeneric.gd" id="1_ltfou"]
 [ext_resource type="Texture2D" uid="uid://db4usmhplus3e" path="res://sprites/characters/crows/crow.png" id="1_xyw0t"]
 [ext_resource type="PackedScene" uid="uid://dvvm66adv8sqw" path="res://utilities/interactions/PlayerDetectionZone.tscn" id="3_sa3nv"]
 [ext_resource type="PackedScene" uid="uid://0xa11eweuo26" path="res://utilities/debugging/BasicTextDebugger.tscn" id="4_ty2yl"]
+[ext_resource type="PackedScene" uid="uid://btno3bpvxjl4h" path="res://utilities/characters/eyes/WhiteEyes1.tscn" id="5_6j4tr"]
 
 [sub_resource type="Animation" id="Animation_sa3nv"]
 length = 0.001
@@ -30,6 +31,18 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WhiteEyes1:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(5, 8)]
 }
 
 [sub_resource type="Animation" id="Animation_6j4tr"]
@@ -61,6 +74,18 @@ tracks/1/keys = {
 "update": 1,
 "values": [13, 14, 15, 16, 17]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WhiteEyes1:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.14, 0.26, 0.42, 0.56),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(5, 8), Vector2(5, 9), Vector2(5, 10), Vector2(5, 8), Vector2(5, 7)]
+}
 
 [sub_resource type="Animation" id="Animation_ltfou"]
 resource_name = "idle-left"
@@ -91,6 +116,18 @@ tracks/1/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WhiteEyes1:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.35, 1, 1.55, 1.95, 2.15, 2.35, 2.45, 2.8, 2.9, 3.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(5, 13), Vector2(5, 12), Vector2(5, 13), Vector2(5, 12), Vector2(5, 13), Vector2(3, 16), Vector2(3, 17), Vector2(3, 16), Vector2(3, 17), Vector2(3, 16), Vector2(5, 13)]
+}
 
 [sub_resource type="Animation" id="Animation_ty2yl"]
 resource_name = "takeoff-left"
@@ -120,6 +157,18 @@ tracks/1/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WhiteEyes1:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.12, 0.28, 0.44, 0.6, 0.78, 0.94, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(5, 14), Vector2(5, 14), Vector2(5, 11), Vector2(5, 11), Vector2(5, 11), Vector2(5, 9), Vector2(5, 9), Vector2(5, 9)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ty2yl"]
 _data = {
@@ -147,11 +196,13 @@ offset = Vector2(8, 8)
 hframes = 18
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(8, 8)
 shape = SubResource("CircleShape2D_xyw0t")
 debug_color = Color(0, 0.6, 0.701961, 0.137255)
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource("3_sa3nv")]
+visible = false
 position = Vector2(8, 8)
 scale = Vector2(1.5, 1.5)
 collision_mask = 16
@@ -159,4 +210,15 @@ collision_mask = 16
 [node name="BasicTextDebugger" parent="." instance=ExtResource("4_ty2yl")]
 position = Vector2(0, 16)
 
+[node name="WhiteEyes1" parent="." instance=ExtResource("5_6j4tr")]
+position = Vector2(5, 8)
+
+[node name="EyeRight" parent="WhiteEyes1" index="0"]
+position = Vector2(1, -5)
+
+[node name="EyeLeft" parent="WhiteEyes1" index="1"]
+visible = false
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+
+[editable path="WhiteEyes1"]
